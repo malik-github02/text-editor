@@ -13,8 +13,11 @@ let searchBtn = document.querySelector('#search-btn');
 let counter = document.querySelector('.counter');
 let maxLength = textInput.getAttribute('maxlength');
 let i = 16;
-
 counter.innerHTML = maxLength;
+if (window.sessionStorage.getItem('user-input')) {
+       textInput.value = window.sessionStorage.getItem('user-input');
+       getCounter();
+}
 plus.onclick = function () {
        if (i < 30) {
               i += 1;
@@ -52,12 +55,8 @@ italic.onclick = function () {
        }
 };
 textInput.oninput = function () {
-       counter.innerHTML = maxLength - textInput.value.length;
-       if (counter.innerHTML == '0') {
-              counter.classList.add('zero');
-       } else {
-              counter.classList.remove('zero');
-       }
+       getCounter();
+       window.sessionStorage.setItem('user-input', textInput.value);
 };
 reverse.onclick = function () {
        if (textInput.value == '') {
@@ -96,7 +95,7 @@ wordCount.onclick = function () {
        if (textInput.value == '') {
               result.innerHTML = 'please write some word';
        } else {
-              result.innerHTML = `The character count is: <span class="text">${
+              result.innerHTML = `The word count is: <span class="text">${
                      textInput.value.split(' ').length
               }</span>`;
        }
@@ -114,3 +113,12 @@ searchBtn.onclick = function () {
               }
        }
 };
+
+function getCounter() {
+       counter.innerHTML = maxLength - textInput.value.length;
+       if (counter.innerHTML == '0') {
+              counter.classList.add('zero');
+       } else {
+              counter.classList.remove('zero');
+       }
+}
